@@ -1,0 +1,52 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
+
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #030014;
+
+  --color-light-100: #cecefb;
+  --color-light-200: #a8b5db;
+
+  --color-gray-100: #9ca4ab;
+
+  --color-dark-100: #0f0d23;
+
+  --font-dm-sans: DM Sans, sans-serif;
+
+  --breakpoint-xs: 480px;
+
+  --background-image-hero-pattern: url("./BG.png");
+}
+@layer components{
+  .heading {
+    @apply font-bold text-white sm:text-6xl text-4xl mx-auto leading-tight
+    sm:leading-[76px] tracking-[-1%];
+  }
+  .pattern {
+    @apply bg-hero-pattern w-full h-screen bg-center bg-cover absolute -z-0;
+  }
+  .nav-bar{
+     @apply px-1 py-12 xs:p-2 flex relative items-center;
+  }
+  .wrapper{
+    @apply px-5 py-12 xs:p-10 max-w-7xl mx-auto flex flex-col relative items-center;
+  }
+  .styled-button {
+    @apply transition m-2 duration-300 ease-in-out bg-gradient-to-r from-purple-500 to-pink-500 text-white sm:px-4 sm:py-2 sm:text-sm px-2 py-1 text-[15px] font-bold rounded-3xl hover:scale-120 cursor-pointer;
+  }
+  .name-tile {
+    @apply relative bg-gradient-to-r from-purple-800 to-indigo-800/60 
+                       border border-pink-400/50 rounded-lg 
+                       p-4 sm:p-6 lg:p-8
+                       m-1 sm:m-2
+                       shadow-lg hover:shadow-purple-400/35 
+                       transition-all duration-300 hover:scale-105
+                       backdrop-blur-sm;
+  }
+}
+
+@utility text-gradient {
+  @apply bg-linear-to-r from-violet-500 via-indigo-500 to-pink-500 bg-clip-text text-transparent;
+}
