@@ -19,10 +19,17 @@
 
   --background-image-hero-pattern: url("./BG.png");
 }
+@layer base{
+  body {
+    color: white;
+    font-family: "DM Sans", serif;
+    background: #030014;
+  }
+}
 @layer components{
   .heading {
-    @apply font-bold text-white sm:text-6xl text-4xl mx-auto leading-tight
-    sm:leading-[76px] tracking-[-1%];
+    @apply font-bold sm:text-6xl text-4xl mx-auto leading-tight
+    sm:leading-[100px] tracking-[-1%] text-center;
   }
   .pattern {
     @apply bg-hero-pattern w-full h-screen bg-center bg-cover absolute -z-0;
@@ -43,7 +50,10 @@
                        m-1 sm:m-2
                        shadow-lg hover:shadow-purple-400/35 
                        transition-all duration-300 hover:scale-105
-                       backdrop-blur-sm;
+                       backdrop-blur-sm
+                       w-10/12
+                       text-lg sm:text-2xl
+                       max-w-4xl;
   }
 }
 
