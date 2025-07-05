@@ -16,7 +16,8 @@ const NavigationBar = ({isLoggedIn, setIsLoggedIn}) => {
     <div className='nav-bar'>
         <img src="./vite.svg" className='m-2 w-[30px] h-[30px] sm:w-[50px] sm:h-[50px]'></img>
         <h1 className='flex text-white font-bold text-2xl grow sm:text-4xl'>Famousity</h1>
-        { isLoggedIn ?
+        { showLoginWindow ? <></> :
+         isLoggedIn ?
         <button className='styled-button' onClick={signOutButton}>SignOut</button>
         : <button className='styled-button' onClick={toggleLoginWindow}>Login</button>
         }

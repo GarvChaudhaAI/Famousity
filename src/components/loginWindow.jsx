@@ -14,7 +14,7 @@ const LoginWindow = ({showLoginWindow, setShowLoginWindow}) => {
     const [password, setPassword] = useState('');
     return (
         <div className='login-window-bg'>
-            <button className='styled-button absolute top-0 right-0 mt-10 mr-10' onClick={toggleLoginWindow}>x</button>
+            <button className='styled-button absolute top-0 right-0 mt-10 mr-10 z-20' onClick={toggleLoginWindow}>x</button>
             {logOrSign ?
                 <div className='login-window'>
                     <div>

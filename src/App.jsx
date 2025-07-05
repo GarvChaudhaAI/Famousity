@@ -4,6 +4,7 @@ import NavigationBar from './components/navigation_bar'
 import Top5 from './components/top5'
 import SearchBox from './components/searchBox'
 import SearchResult from './components/searchResult'
+import { test } from './appwrite'
 const top5 =[
     {name:"Garv" ,id:"thegarv" ,stars:5},
     {name:"Robin",id:"therobin",stars:4},
@@ -13,6 +14,7 @@ const top5 =[
 ]
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+  test();
   return (
     <div>
       <div className='pattern'></div>
