@@ -11,10 +11,10 @@ const Top5 = ({top5}) => {
                 <div className='name-tile my-1 sm:my-2 flex items-center'>
                     <h1 className='flex w-full'>
                         <span className='text-gray-300'>{index+1}. &nbsp;</span>
-                        <span className='font-bold'>{user.name} &nbsp;</span>
-                        <span className='text-gray-300 italic'>(@{user.id})</span>
+                        <span className='font-bold'>{user.fullName} &nbsp;</span>
+                        <span className='text-gray-300 italic'>(@{user.userID})</span>
                     </h1>
-                    <h2>{user.stars}</h2>
+                    <h2>{user.count}</h2>
                     <img className="w-[2rem] mx-3" src="./star.svg"/>
                 </div> 
                 </li>

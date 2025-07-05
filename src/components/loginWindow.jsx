@@ -1,12 +1,16 @@
 import React, { useState } from 'react'
 import '../index.css'
-const LoginWindow = ({showLoginWindow, setShowLoginWindow}) => {
+import { addUser } from '../appwrite'
+const LoginWindow = ({showLoginWindow, setShowLoginWindow, isLoggedIn, setIsLoggedIn}) => {
     const [logOrSign, setLogOrSign] = useState(true)
     function toggleLogOrSign() {
         setLogOrSign(!logOrSign)
     }
     function toggleLoginWindow(){
         setShowLoginWindow(!showLoginWindow)
+    }
+    async function SignInFunc(){
+        await addUser(fullName, email, userID, password,isLoggedIn, setIsLoggedIn, showLoginWindow, setShowLoginWindow);
     }
     const [fullName, setFullName] = useState('');
     const [email   , setEmail   ] = useState('');
@@ -38,7 +42,7 @@ const LoginWindow = ({showLoginWindow, setShowLoginWindow}) => {
                         value={password} onChange={(e)=>setPassword(e.target.value)}/>
                     </div>
                     <div className='flex w-full justify-center mt-5'>
-                        <button className='styled-button'>Sign Up</button>
+                        <button className='styled-button' onClick={SignInFunc}>Sign Up</button>
                     </div> 
                     <div className='absolute bottom-0 left-0 right-0 mb-5 flex justify-center items-center'>
                         <h1>Already have an account? &nbsp; &nbsp; </h1>

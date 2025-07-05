@@ -22,7 +22,8 @@ const NavigationBar = ({isLoggedIn, setIsLoggedIn}) => {
         : <button className='styled-button' onClick={toggleLoginWindow}>Login</button>
         }
         {showLoginWindow? 
-        <LoginWindow showLoginWindow={showLoginWindow} setShowLoginWindow={setShowLoginWindow}/>
+        <LoginWindow showLoginWindow={showLoginWindow} setShowLoginWindow={setShowLoginWindow}
+         isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>
         : <></>
         }
     </div>
