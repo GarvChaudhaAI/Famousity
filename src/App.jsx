@@ -12,10 +12,13 @@ const top5 =[
     {name:"Mike" ,id:"mike"    ,stars:1},
 ]
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
   return (
     <div>
       <div className='pattern'></div>
-      <NavigationBar/>
+      <NavigationBar
+          isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}
+      />
       <div className='wrapper'>
         <h1 className='heading'>Know your <span className='text-gradient'>Popularity</span> Ranking </h1>
         <Top5 top5={top5}/>

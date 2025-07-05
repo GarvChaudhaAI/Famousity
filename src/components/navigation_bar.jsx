@@ -1,12 +1,29 @@
-import React from 'react'
+import React, { useState } from 'react'
 import '../index.css'
-
-const NavigationBar = () => {
+import LoginWindow from './loginWindow';
+const NavigationBar = ({isLoggedIn, setIsLoggedIn}) => {
+  function loginButton() {
+    setIsLoggedIn(!isLoggedIn);
+  }
+  function signOutButton() {
+    setIsLoggedIn(!isLoggedIn);
+  }
+  function toggleLoginWindow(){
+        setShowLoginWindow(!showLoginWindow)
+  }
+  const [showLoginWindow, setShowLoginWindow] = useState(false);
   return (
     <div className='nav-bar'>
         <img src="./vite.svg" className='m-2 w-[30px] h-[30px] sm:w-[50px] sm:h-[50px]'></img>
-        <h1 className='flex text-white font-bold text-2xl w-full sm:text-4xl'>Famousity</h1>
-        <button className='styled-button'>login</button>
+        <h1 className='flex text-white font-bold text-2xl grow sm:text-4xl'>Famousity</h1>
+        { isLoggedIn ?
+        <button className='styled-button' onClick={signOutButton}>SignOut</button>
+        : <button className='styled-button' onClick={toggleLoginWindow}>Login</button>
+        }
+        {showLoginWindow? 
+        <LoginWindow showLoginWindow={showLoginWindow} setShowLoginWindow={setShowLoginWindow}/>
+        : <></>
+        }
     </div>
   )
 }
