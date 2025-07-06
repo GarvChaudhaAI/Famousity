@@ -92,3 +92,29 @@ export const LoginUser = async( email,  password, user, setUser, isLoggedIn,setI
         console.log(error);
     }
 }
+export const getSearchResults = async(searchTerm)=>{
+    try{
+        const result = await database.listDocuments(
+            DATABASE_ID, COLLECTION_ID,[
+                Query.contains('userID',searchTerm),
+                Query.limit(5)
+            ]
+        );
+        return result.documents;
+    } catch (error) {
+        console.log("Error getting search result", error);
+    }
+}
+export const getRank = async(stars)=>{
+    try{
+        const result = await database.listDocuments(
+            DATABASE_ID, COLLECTION_ID,[
+                Query.greaterThan('count',stars),
+                Query.limit(1)
+            ]
+        );
+        return result.total;
+    } catch (error) {
+        console.log("Error getting rank:", error);
+    }
+}
