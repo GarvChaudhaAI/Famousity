@@ -6,13 +6,7 @@ import SearchBox from './components/searchBox'
 import SearchResult from './components/searchResult'
 import { getRank, getSearchResults, getTop5 } from './appwrite'
 import { useDebounce } from 'react-use';
-const dummy =[
-    {name:"Garv" ,id:"thegarv" ,stars:5},
-    {name:"Robin",id:"therobin",stars:4},
-    {name:"Joyce",id:"joyce"   ,stars:3},
-    {name:"Mark" ,id:"mark"    ,stars:2},
-    {name:"Mike" ,id:"mike"    ,stars:1},
-]
+
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [top5, setTop5] = useState([]);
@@ -43,7 +37,7 @@ function App() {
   }
   const loadSearchResults = async()=>{
     try{
-      const result = await getSearchResults(searchTerm);
+      const result = await getSearchResults(searchTerm,user);
       setSearchResult(result);
 
     } catch(error){
@@ -61,8 +55,15 @@ function App() {
       loadTop5();
   },[isLoggedIn])
   useEffect(()=>{
-    loadSearchResults(debouncedSearchTerm);
-  },[debouncedSearchTerm]);
+    if(isLoggedIn){
+      loadSearchResults(debouncedSearchTerm);
+    }
+  },[debouncedSearchTerm,isLoggedIn]);
+  useEffect(()=>{
+    if(!isLoggedIn){
+      setRank(0);
+    }
+  },[isLoggedIn])
   return (
     <div>
       <div className='pattern'></div>
@@ -73,9 +74,15 @@ function App() {
       <div className='wrapper'>
         <h1 className='heading'>Know your <span className='text-gradient'>Popularity</span> Ranking </h1>
         <Top5 top5={top5}/>
-        <h1 className='heading'>Your Popularity:<span className='text-gradient'>{rank}</span></h1>
-        <SearchBox searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
-        <SearchResult results={searchResult}/>
+        <h1 className='heading mt-10 mb-10'>Your Popularity:<span className='text-gradient'>{rank}</span></h1>
+        {isLoggedIn ?
+          <SearchBox searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
+        : <h1>Login to Search your friends</h1>
+        }
+        {isLoggedIn?
+          <SearchResult results={searchResult} user={user} setSearchResult={setSearchResult}/>
+        : <></>
+        }
       </div>
     </div>
   )

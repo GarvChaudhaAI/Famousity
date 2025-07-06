@@ -3,7 +3,8 @@ import { Client, Databases, ID, Query } from 'appwrite';
 const PROJECT_ID = import.meta.env.VITE_APPWRITE_PROJECT_ID;
 const DATABASE_ID = import.meta.env.VITE_APPWRITE_DATABASE_ID;
 const COLLECTION_ID = import.meta.env.VITE_APPWRITE_COLLECTION_ID;
-const ENDPOINT = import.meta.env.VITE_APPWRITE_ENDPOINT
+const ENDPOINT = import.meta.env.VITE_APPWRITE_ENDPOINT;
+const STAR_COLLECTION_ID = import.meta.env.VITE_APPWRITE_COLLECTION_ID_STAR;
 
 const client = new Client()
     .setEndpoint(ENDPOINT)
@@ -38,6 +39,12 @@ export const addUser = async (fullName, email, userID, password, user, setUser,i
             await database.createDocument(DATABASE_ID,COLLECTION_ID,
                 ID.unique(), newUser
             );
+            await database.createDocument(DATABASE_ID,STAR_COLLECTION_ID,
+                ID.unique(), {
+                    mainUser: userID,
+                    otherUser: userID,
+                }
+            )
             setUser(newUser);
             console.log("User Added");
             setIsLoggedIn(true);
@@ -92,7 +99,7 @@ export const LoginUser = async( email,  password, user, setUser, isLoggedIn,setI
         console.log(error);
     }
 }
-export const getSearchResults = async(searchTerm)=>{
+export const getSearchResults = async(searchTerm,user)=>{
     try{
         const result = await database.listDocuments(
             DATABASE_ID, COLLECTION_ID,[
@@ -100,7 +107,37 @@ export const getSearchResults = async(searchTerm)=>{
                 Query.limit(5)
             ]
         );
-        return result.documents;
+        const otherUserID = [];
+        const finalResult=[];
+        for(let i=0;i<result.documents.length;i++){
+            otherUserID.push(result.documents[i].userID);
+        }
+        console.log("otheruserid array:",otherUserID);
+        if(otherUserID.length>0){
+            const staredByUser = await database.listDocuments(
+                DATABASE_ID,STAR_COLLECTION_ID,[
+                    Query.equal('mainUser',user.userID),
+                    Query.contains('otherUser', otherUserID)
+                ]
+            )
+            console.log("Starred by user:",staredByUser);
+            
+            let temp={};
+            for(let j=0;j<result.documents.length;j++){
+                temp = result.documents[j];
+                temp.hasStarred = false;
+                temp.starId = null;
+                for(let i=0;i<staredByUser.documents.length;i++){
+                    if(staredByUser.documents[i].otherUser===temp.userID){
+                        temp.hasStarred = true;
+                        temp.starId = staredByUser.documents[i].$id;
+                    }
+                }
+                finalResult.push(temp);
+            }
+        }
+        console.log("final result:",finalResult);
+        return finalResult;
     } catch (error) {
         console.log("Error getting search result", error);
     }
@@ -116,5 +153,55 @@ export const getRank = async(stars)=>{
         return result.total;
     } catch (error) {
         console.log("Error getting rank:", error);
+    }
+}
+export const toggleStarFriend = async(user, otherUser,index,searchResult, setSearchResult)=>{
+    try{
+        if(otherUser.hasStarred){
+            database.updateDocument(DATABASE_ID,COLLECTION_ID,
+                otherUser.$id, {
+                    count: otherUser.count-1
+                }
+            );
+            database.deleteDocument(DATABASE_ID,STAR_COLLECTION_ID,otherUser.starId);
+            const updatedResults = searchResult.map((item, i) => 
+                i === index ? {
+                    ...item,
+                    count: item.count - 1,
+                    hasStarred: false,
+                    starId: null
+                } : item
+            );
+
+            console.log("Star Removed");
+            return updatedResults;
+        }else{
+            database.updateDocument(DATABASE_ID,COLLECTION_ID,
+                otherUser.$id, {
+                    count: otherUser.count+1
+                }
+            );
+            const uniqueId = ID.unique();
+            const updatedResults = searchResult.map((item, i) => 
+                i === index ? {
+                    ...item,
+                    count: item.count + 1,
+                    hasStarred: true,
+                    starId: uniqueId
+                } : item
+            );
+            database.createDocument(DATABASE_ID,STAR_COLLECTION_ID,
+                uniqueId,{
+                    mainUser: user.userID,
+                    otherUser: otherUser.userID
+                }
+            );
+            console.log("Star Added");
+            return updatedResults;
+
+        }
+
+    } catch(error){
+        console.log("Error starring friend:",error);
     }
 }
