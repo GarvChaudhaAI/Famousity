@@ -15,7 +15,7 @@ const dummy =[
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [top5, setTop5] = useState([]);
-
+  const [user, setUser] = useState({});
   const loadTop5 = async () => {
     try {
       const result = await getTop5();
@@ -24,6 +24,9 @@ function App() {
       console.log("Error fetching movies:",error)
     }
   }
+  useEffect(()=>{
+    console.log(user);
+  },[user])
 
   useEffect(()=>{
     loadTop5();
@@ -33,6 +36,7 @@ function App() {
       <div className='pattern'></div>
       <NavigationBar
           isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}
+          user={user} setUser={setUser}
       />
       <div className='wrapper'>
         <h1 className='heading'>Know your <span className='text-gradient'>Popularity</span> Ranking </h1>

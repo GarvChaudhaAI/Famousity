@@ -1,8 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState ,useEffect } from 'react'
 import '../index.css'
-import { addUser } from '../appwrite'
-const LoginWindow = ({showLoginWindow, setShowLoginWindow, isLoggedIn, setIsLoggedIn}) => {
-    const [logOrSign, setLogOrSign] = useState(true)
+import { addUser, LoginUser } from '../appwrite'
+const LoginWindow = ({showLoginWindow, setShowLoginWindow, isLoggedIn, setIsLoggedIn,  user, setUser}) => {
+    const [logOrSign, setLogOrSign] = useState(false);
+    const [fullName, setFullName] = useState('');
+    const [email   , setEmail   ] = useState('');
+    const [userID  , setUserID  ] = useState('');
+    const [password, setPassword] = useState('');
+
     function toggleLogOrSign() {
         setLogOrSign(!logOrSign)
     }
@@ -10,12 +15,12 @@ const LoginWindow = ({showLoginWindow, setShowLoginWindow, isLoggedIn, setIsLogg
         setShowLoginWindow(!showLoginWindow)
     }
     async function SignInFunc(){
-        await addUser(fullName, email, userID, password,isLoggedIn, setIsLoggedIn, showLoginWindow, setShowLoginWindow);
+        await addUser(fullName, email, userID, password, user, setUser, isLoggedIn, setIsLoggedIn, showLoginWindow, setShowLoginWindow);
     }
-    const [fullName, setFullName] = useState('');
-    const [email   , setEmail   ] = useState('');
-    const [userID  , setUserID  ] = useState('');
-    const [password, setPassword] = useState('');
+    async function LoginFunc(){
+        await LoginUser(email, password, user, setUser ,isLoggedIn, setIsLoggedIn, showLoginWindow, setShowLoginWindow);
+    }
+
     return (
         <div className='login-window-bg'>
             <button className='styled-button absolute top-0 right-0 mt-10 mr-10 z-20' onClick={toggleLoginWindow}>x</button>
@@ -61,7 +66,7 @@ const LoginWindow = ({showLoginWindow, setShowLoginWindow, isLoggedIn, setIsLogg
                          value={password} onChange={(e)=>setPassword(e.target.value)}/>
                     </div>
                     <div className='flex w-full justify-center mt-5'>
-                        <button className='styled-button'>Login</button>
+                        <button className='styled-button' onClick={LoginFunc}>Login</button>
                     </div>
                     <div className='absolute bottom-0 left-0 right-0 mb-10 flex justify-center items-center'>
                         <h1>Don't have an account &nbsp; &nbsp; </h1>

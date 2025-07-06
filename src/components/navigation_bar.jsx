@@ -1,12 +1,10 @@
 import React, { useState } from 'react'
 import '../index.css'
 import LoginWindow from './loginWindow';
-const NavigationBar = ({isLoggedIn, setIsLoggedIn}) => {
-  function loginButton() {
-    setIsLoggedIn(!isLoggedIn);
-  }
+const NavigationBar = ({isLoggedIn, setIsLoggedIn, user, setUser}) => {
   function signOutButton() {
-    setIsLoggedIn(!isLoggedIn);
+    setIsLoggedIn(false);
+    setUser({});
   }
   function toggleLoginWindow(){
         setShowLoginWindow(!showLoginWindow)
@@ -23,7 +21,8 @@ const NavigationBar = ({isLoggedIn, setIsLoggedIn}) => {
         }
         {showLoginWindow? 
         <LoginWindow showLoginWindow={showLoginWindow} setShowLoginWindow={setShowLoginWindow}
-         isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>
+         isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}
+         user={user} setUser={setUser}/>
         : <></>
         }
     </div>
