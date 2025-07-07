@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import '../index.css'
 import LoginWindow from './loginWindow';
-const NavigationBar = ({isLoggedIn, setIsLoggedIn, user, setUser}) => {
+const NavigationBar = ({isLoggedIn, setIsLoggedIn, user, setUser, showLoginWindow, setShowLoginWindow}) => {
   function signOutButton() {
     setIsLoggedIn(false);
     setUser({});
@@ -9,7 +9,7 @@ const NavigationBar = ({isLoggedIn, setIsLoggedIn, user, setUser}) => {
   function toggleLoginWindow(){
         setShowLoginWindow(!showLoginWindow)
   }
-  const [showLoginWindow, setShowLoginWindow] = useState(false);
+  
   return (
     <div className='nav-bar'>
         <img src="./vite.svg" className='m-2 w-[30px] h-[30px] sm:w-[50px] sm:h-[50px]'></img>

@@ -4,10 +4,12 @@ import NavigationBar from './components/navigation_bar'
 import Top5 from './components/top5'
 import SearchBox from './components/searchBox'
 import SearchResult from './components/searchResult'
-import { getRank, getSearchResults, getTop5 } from './appwrite'
+import { getRank, getSearchResults, getTop5} from './appwrite'
 import { useDebounce } from 'react-use';
-
+import {useGSAP } from '@gsap/react';
+import gsap from 'gsap';
 function App() {
+  const [showLoginWindow, setShowLoginWindow] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [top5, setTop5] = useState([]);
   const [user, setUser] = useState({});
@@ -44,7 +46,17 @@ function App() {
       console.log("Error loading searh results",error)
     }
   }
-
+  function toggleLoginWindow(){
+        setShowLoginWindow(!showLoginWindow)
+    }
+  useGSAP(()=>{
+    gsap.from('.heading',{
+      y:100,
+      opacity:0,
+      duration:1,
+      ease:'power1.inOut'
+    })
+  },[])
   useEffect(()=>{
     if(isLoggedIn && user){
       console.log(user);
@@ -70,6 +82,7 @@ function App() {
       <NavigationBar
           isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}
           user={user} setUser={setUser}
+          showLoginWindow={showLoginWindow} setShowLoginWindow={setShowLoginWindow}
       />
       <div className='wrapper'>
         <h1 className='heading'>Know your <span className='text-gradient'>Popularity</span> Ranking </h1>
@@ -82,7 +95,8 @@ function App() {
           </>
           :<>
             <h1 className='text-3xl font-bold mb-6'>Login to know your Popularity</h1>
-            <h1 className='text-3xl font-bold mb-6'>Login to Search your friends</h1>
+            <button className='styled-button' onClick={toggleLoginWindow}>Login</button>
+            <h1 className='text-3xl font-bold mt-10 mb-6'>And see your friends</h1>
           </>
         }
       </div>
