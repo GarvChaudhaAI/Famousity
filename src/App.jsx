@@ -89,8 +89,17 @@ function App() {
         <Top5 top5={top5}/>
         {isLoggedIn?
           <>
-            <h1 className='heading mt-10 mb-10'>Your Popularity :&nbsp;<span className='text-gradient'>{rank}</span></h1>
-            <h1 className='text-4xl flex'>Your Stars: &nbsp;&nbsp; {user.count}<img className="w-[2rem] mx-3" src="./star.svg"/></h1>
+            <h1 className='heading mt-10 mb-10'>Your Popularity :</h1>
+            <div className='name-tile my-1 sm:my-10 flex items-center'>
+                <h1 className='flex w-full'>
+                    <span className='text-gray-300 font-bold'>{rank}. &nbsp;</span>
+                    <span className='font-bold'>{user.fullName} &nbsp;</span>
+                    <span className='text-gray-300 italic'>(@{user.userID})</span>
+                </h1>
+                <h2>{user.count}</h2>
+                <img className="w-[2rem] mx-3" src="./star.svg"/>
+            </div> 
+            
             <SearchBox searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
             <SearchResult results={searchResult} user={user} setSearchResult={setSearchResult}/>
           </>
