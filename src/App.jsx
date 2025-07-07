@@ -74,14 +74,16 @@ function App() {
       <div className='wrapper'>
         <h1 className='heading'>Know your <span className='text-gradient'>Popularity</span> Ranking </h1>
         <Top5 top5={top5}/>
-        <h1 className='heading mt-10 mb-10'>Your Popularity:<span className='text-gradient'>{rank}</span></h1>
-        {isLoggedIn ?
-          <SearchBox searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
-        : <h1>Login to Search your friends</h1>
-        }
         {isLoggedIn?
-          <SearchResult results={searchResult} user={user} setSearchResult={setSearchResult}/>
-        : <></>
+          <>
+            <h1 className='heading mt-10 mb-10'>Your Popularity:<span className='text-gradient'>{rank}</span></h1>
+            <SearchBox searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
+            <SearchResult results={searchResult} user={user} setSearchResult={setSearchResult}/>
+          </>
+          :<>
+            <h1 className='text-3xl font-bold mb-6'>Login to know your Popularity</h1>
+            <h1 className='text-3xl font-bold mb-6'>Login to Search your friends</h1>
+          </>
         }
       </div>
     </div>

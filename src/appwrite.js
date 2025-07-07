@@ -10,48 +10,91 @@ const client = new Client()
     .setEndpoint(ENDPOINT)
     .setProject(PROJECT_ID);
 const database = new Databases(client);
+const courseCodes = new Set([
+    "AM1",
+    "BB1",
+    "CH1",
+    "CS1",
+    "CE1",
+    "EE1",
+    "EE3",
+    "ES1",
+    "MS1",
+    "MT1",
+    "ME1",
+    "ME2",
+    "PH1",
+    "TT1",
+    "CH7",
+    "CS5",
+    "MT6"
+].map(code=>code.toLowerCase()));
+const isNumberRegex = (str) => {
+    return /^\d+$/.test(str);
+};
+const validateEmail = (email)=>{
+    if(!courseCodes.has(email.substring(0,3).toLowerCase())){
+        return false;
+    }
+    if(email[3]!=='2'){
+        return false;
+    }
+    if(!email.toLowerCase().endsWith('iitd.ac.in')){
+        return false;
+    }
+    if(email[9]!=='@'){
+        return false;
+    }
+    if(!isNumberRegex(email.substring(2,9))){
+        return false;
+    }
+    return true;
 
+}
 export const addUser = async (fullName, email, userID, password, user, setUser,isLoggedIn, setIsLoggedIn, showLoginWindow, setShowLoginWindow) => {
   try {
-    const result = await database.listDocuments(
-        DATABASE_ID,COLLECTION_ID, [
-             Query.equal('Email',email)
-        ]
-    );
-    if(result.documents.length>0){
-        alert('Email is already Registered. Try to Login');
-    } else {
+    if(validateEmail(email)){
         const result = await database.listDocuments(
             DATABASE_ID,COLLECTION_ID, [
-                Query.equal('userID',userID),
+                Query.equal('Email',email)
             ]
         );
         if(result.documents.length>0){
-            alert('UserID is already taken.Please try a different one.');
+            alert('Email is already Registered. Try to Login');
         } else {
-            const newUser = {
-                    userID: userID,
-                    fullName: fullName,
-                    password: password,
-                    count: 1,
-                    Email: email
-                }
-            await database.createDocument(DATABASE_ID,COLLECTION_ID,
-                ID.unique(), newUser
+            const result = await database.listDocuments(
+                DATABASE_ID,COLLECTION_ID, [
+                    Query.equal('userID',userID),
+                ]
             );
-            await database.createDocument(DATABASE_ID,STAR_COLLECTION_ID,
-                ID.unique(), {
-                    mainUser: userID,
-                    otherUser: userID,
-                }
-            )
-            setUser(newUser);
-            console.log("User Added");
-            setIsLoggedIn(true);
-            setShowLoginWindow(false);
+            if(result.documents.length>0){
+                alert('UserID is already taken.Please try a different one.');
+            } else {
+                const newUser = {
+                        userID: userID,
+                        fullName: fullName,
+                        password: password,
+                        count: 1,
+                        Email: email
+                    }
+                await database.createDocument(DATABASE_ID,COLLECTION_ID,
+                    ID.unique(), newUser
+                );
+                await database.createDocument(DATABASE_ID,STAR_COLLECTION_ID,
+                    ID.unique(), {
+                        mainUser: userID,
+                        otherUser: userID,
+                    }
+                )
+                setUser(newUser);
+                console.log("User Added");
+                setIsLoggedIn(true);
+                setShowLoginWindow(false);
+            }
         }
+    }else{
+        alert('Email is not a valid IID email.')
     }
-
   } catch (error) {
     console.log(error);
   }
