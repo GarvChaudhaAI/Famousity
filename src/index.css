@@ -78,7 +78,7 @@
     @apply fixed w-full h-full bg-black/70 top-0 left-0 z-20 flex items-center justify-center;
   }
   .login-window {
-    @apply relative bg-gray-800 h-10/12 w-10/12 max-w-xl rounded-2xl flex-col items-center px-10 py-7;
+    @apply relative bg-gray-800 h-10/12 w-10/12 max-w-xl max-h-[1080px] rounded-2xl flex-col items-center px-10 py-7;
   }
 }
 
