@@ -53,6 +53,10 @@ const validateEmail = (email)=>{
 }
 export const addUser = async (fullName, email, userID, password, user, setUser,isLoggedIn, setIsLoggedIn, showLoginWindow, setShowLoginWindow) => {
   try {
+    email = email.trim();
+    fullName = fullName.trim();
+    userID = userID.trim();
+    password = password.trim();
     if(validateEmail(email)){
         const result = await database.listDocuments(
             DATABASE_ID,COLLECTION_ID, [
@@ -114,6 +118,8 @@ export const getTop5 = async() => {
 }
 export const LoginUser = async( email,  password, user, setUser, isLoggedIn,setIsLoggedIn ,showLoginWindow, setShowLoginWindow)=>{
     try{
+        email = email.trim();
+        password = password.trim();
         const result = await database.listDocuments(
             DATABASE_ID, COLLECTION_ID,[
                 Query.equal('Email',email),
