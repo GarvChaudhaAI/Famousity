@@ -108,7 +108,8 @@ export const getTop5 = async() => {
         const result = await database.listDocuments(
             DATABASE_ID, COLLECTION_ID,[
                 Query.limit(5),
-                Query.orderDesc('count')
+                Query.orderDesc('count'),
+                Query.select(['fullName','userID','count'])
             ]
         )
         return result.documents
@@ -153,7 +154,8 @@ export const getSearchResults = async(searchTerm,user)=>{
         const result = await database.listDocuments(
             DATABASE_ID, COLLECTION_ID,[
                 Query.contains('userID',searchTerm),
-                Query.limit(5)
+                Query.limit(5),
+                Query.select(['fullName','userID','count'])
             ]
         );
         const otherUserID = [];
