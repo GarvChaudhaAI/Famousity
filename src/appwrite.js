@@ -57,7 +57,7 @@ export const addUser = async (fullName, email, userID, password, user, setUser,i
     fullName = fullName.trim();
     userID = userID.trim();
     password = password.trim();
-    if(validateEmail(email) && fullName && userID && password && email){
+    if(email && validateEmail(email) && fullName && userID && password ){
         const result = await database.listDocuments(
             DATABASE_ID,COLLECTION_ID, [
                 Query.equal('Email',email)
