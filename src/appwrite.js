@@ -156,7 +156,8 @@ export const getSearchResults = async(searchTerm,user)=>{
                 Query.contains('userID',searchTerm),
                 Query.limit(5),
                 Query.select(['fullName','userID','count']),
-                Query.orderAsc('count')
+                Query.orderAsc('count'),
+                Query.orderDesc('$createdAt')
             ]
         );
         const otherUserID = [];
