@@ -57,7 +57,7 @@ export const addUser = async (fullName, email, userID, password, user, setUser,i
     fullName = fullName.trim();
     userID = userID.trim();
     password = password.trim();
-    if(validateEmail(email)){
+    if(validateEmail(email) && fullName && userID && password && email){
         const result = await database.listDocuments(
             DATABASE_ID,COLLECTION_ID, [
                 Query.equal('Email',email)
@@ -97,7 +97,7 @@ export const addUser = async (fullName, email, userID, password, user, setUser,i
             }
         }
     }else{
-        alert('Email is not a valid IID email.')
+        alert('No field can be blank or your email may not be valid IID email')
     }
   } catch (error) {
     console.log(error);
@@ -154,10 +154,10 @@ export const getSearchResults = async(searchTerm,user)=>{
         const result = await database.listDocuments(
             DATABASE_ID, COLLECTION_ID,[
                 Query.contains('userID',searchTerm),
-                Query.limit(5),
                 Query.select(['fullName','userID','count']),
                 Query.orderAsc('count'),
-                Query.orderDesc('$createdAt')
+                Query.orderDesc('$createdAt'),
+                Query.limit(50)
             ]
         );
         const otherUserID = [];
@@ -170,7 +170,8 @@ export const getSearchResults = async(searchTerm,user)=>{
             const staredByUser = await database.listDocuments(
                 DATABASE_ID,STAR_COLLECTION_ID,[
                     Query.equal('mainUser',user.userID),
-                    Query.contains('otherUser', otherUserID)
+                    Query.contains('otherUser', otherUserID),
+                    Query.limit(50)
                 ]
             )
             console.log("Starred by user:",staredByUser);
