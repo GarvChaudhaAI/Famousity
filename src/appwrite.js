@@ -155,7 +155,8 @@ export const getSearchResults = async(searchTerm,user)=>{
             DATABASE_ID, COLLECTION_ID,[
                 Query.contains('userID',searchTerm),
                 Query.limit(5),
-                Query.select(['fullName','userID','count'])
+                Query.select(['fullName','userID','count']),
+                Query.orderAsc('count')
             ]
         );
         const otherUserID = [];
